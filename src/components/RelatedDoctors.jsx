@@ -1,21 +1,33 @@
-import React, { useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { AppContext } from '../context/AppContext'
+import React, { useEffect, useState } from 'react'
+import { AppContext } from '../context/AppContext';
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const TopDoctors = () => {
+const RelatedDoctors = ({speciality, docId}) => {
 
+const { doctors } = useContext(AppContext);
 const navigate = useNavigate()
-const { doctors } = useContext(AppContext)
- 
 
-    return (
-        <div className='flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10'>
+//   currentDate.setMinutes(currentDate.getMinutes() + 30)
+
+const [relDoc, setRelDoc] = useState([])
+
+
+useEffect(() => {
+    if (doctors.length > 0 && speciality ) {
+        const doctorsData  = doctors.filter((doc) =>  doc.speciality === speciality && doc._id !== docId) 
+    setRelDoc(doctorsData) }
+
+}, [doctors, speciality, docId])
+
+  return (
+     <div className='flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10'>
         <h1 className='text-3xl font-medium'>Top Doctors Book</h1>
         <p className='sm:w-1/3 text-center text-sm'>Simply Browse Doctors</p>
         
         {/* Responsive Grid Layout */}
         <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-3 sm:px-0'>
-            {doctors.slice(0, 10).map((item, index) => (
+            {relDoc.slice(0, 5).map((item, index) => (
                 <div onClick={()=> {navigate(`/appointment/${item._id}`); scrollTo(0,0)}} key={index} className='border border-blue-200 rounded-xl overflow-hidden cursor-pointer shadow-md'>
                     <img className='w-full h-40 object-cover bg-blue-50' src={item.image} alt={item.name} />
                     <div className='p-4'>
@@ -35,8 +47,7 @@ const { doctors } = useContext(AppContext)
         {/* More Button */}
         <button onClick={() => {navigate('/doctors')}} className='mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition'>More</button>
     </div>
-    
-            )
+  )
 }
 
-            export default TopDoctors
+export default RelatedDoctors

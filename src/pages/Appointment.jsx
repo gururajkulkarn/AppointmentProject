@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
+import RelatedDoctors from "../components/RelatedDoctors";
 
 const Appointment = () => {
   const { docId } = useParams();
@@ -122,11 +123,11 @@ console.log(docSlots)
 
 
   return  docInfo && (
-   
+   <>
       <div>
         <div className="flex flex-col sm:flex-row gap-4">
           <div>
-            <img className="bg-blue-500 w-full sm:max-w-72 rounded-lg" src={docInfo.image} alt="" />
+            <img className="bg-blue-600 w-full sm:max-w-72 rounded-lg" src={docInfo.image} alt="" />
           </div>
 
           <div className="flex-1 border  border-gray-400 rounded-lg p-10 p-7 bg-white mx-2 sm:mx-0 mt-[-80px] sm:mt-0">
@@ -134,7 +135,7 @@ console.log(docSlots)
               {docInfo.name}
               <img src={assets.varified_icon} alt="" />
             </p>
-          </div>
+        
           <p className="flex items-center gap-2 text-sm mt-1 text-gray-500">
             {docInfo.degree} - {docInfo.speciality}
           </p>
@@ -146,28 +147,51 @@ console.log(docSlots)
             </p>
             <p className="text-sm text-gray-500 max-w-[700px] mt-1">{docInfo.about}</p>
           </div>
-          <p className="text-gray-500 font-medium mt-4">Appointment Fees:<span className="text-gray-600">{currencySymbol}{docInfo.fees}</span></p>
+          <p className="text-gray-500 font-medium mt-4">Appointment Fees:$<span className="text-gray-600">{currencySymbol}{docInfo.fees}</span></p>
+         </div>
         </div>
-   
-
- 
-<div className="sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700"> 
-  <p>Booking Slots</p>
-<div className="flex-gap-3 items-center w-full overflow-x-scroll mt-4">
-  {
-    docSlots.length && docSlots.map((item, index) => ( 
-      <div onClick={()=> setSlotIndex(index)} className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${slotIndex === index ? 'bg-blue-500 text-white' : 'border border-gray-200'}`}>
-          <p>{item[0] && daysofWeek[item[0].datetime.getDay()]}</p>
-          <p>{item[0] && item[0].datetime.getDate()}</p>
-        </div>
-    ))
-  }
-     
-</div>
-</div>
-
    </div>
 
+
+
+<div className="mt-10 px-4 sm:px-10">
+  <p className="font-semibold text-lg text-gray-700 mb-3">Booking Slots</p>
+  <div className="flex gap-3 overflow-x-auto scrollbar-hide">
+    {
+      docSlots.length > 0 && docSlots.map((item, index) => (
+        <div
+          key={index}
+          onClick={() => setSlotIndex(index)}
+          className={`min-w-[80px] text-center px-4 py-10 rounded-full cursor-pointer transition 
+            ${slotIndex === index ? 'bg-blue-600 text-white' : 'bg-white border border-gray-300 text-gray-700'}
+          `}
+        >
+          <p className="font-semibold">{item[0] && daysofWeek[item[0].datetime.getDay()]}</p>
+          <p className="text-sm">{item[0] && item[0].datetime.getDate()}</p>
+        </div>
+      ))
+    }
+  </div>
+
+<div className="flex items-center gap-3 w-full overflow-x-scroll mt-4 ">
+  {docSlots.length  && docSlots[slotIndex].map((item, index) => (
+<p key={item.time || index} onClick={()=> setSlotTime(item.time)} className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime ? 'bg-blue-600 text-white font-medium' : 'text-gray-400 border border-gray-300 font-medium'}`}>
+{item.time.toLowerCase()  }
+</p>
+
+  ))}
+</div>
+
+<button className="bg-blue-600 text-white text-sm font-light px-14 py-3 rounded-full mt-4 text-2xl font-medium ">Book an Appointment</button>
+
+
+<RelatedDoctors  docId={docId} speciality={docInfo.speciality}/>
+
+</div>
+
+
+ 
+</>
     
   );
 };
