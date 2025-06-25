@@ -7,7 +7,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 const Navbar = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const { token, setToken } = useContext(AppContext); 
+  const { token, setToken, userData } = useContext(AppContext); 
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false); // NEW
 
@@ -63,7 +63,11 @@ const Navbar = () => {
               onMouseEnter={() => setShowProfileDropdown(true)}
               onMouseLeave={() => setShowProfileDropdown(true)}
             >
-              <img className="w-8 rounded-full" src={assets.profile_pic} alt="profile" />
+              <img
+              className="w-8 rounded-full"
+              src={userData?.image || assets.profile_pic}
+              alt="profile"
+            />
               <img className="w-2.5" src={assets.dropdown_icon} alt="dropdown" />
 
               {/* Dropdown Menu */}
