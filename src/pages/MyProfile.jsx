@@ -1,24 +1,21 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+
+import { AppContext } from '../context/AppContext';
 
 const MyProfile = () => {
-  const [userData, setUserData] = useState({
-    name: 'Gururaj Kulkarni',
-    image: '',
-    email: 'gururajkulkarni115@gmail.com',
-    phone: '7353563239',
-    adress: 'Bidar, India',
-    gender: 'Male',
-    dob: '1996-12-09',
-  });
+
+const {userData, setUserData} = useContext(AppContext);
 
   const [isEdit, setIsEdit] = useState(false);
 
+  if (!userData) return <div className="text-center mt-10">Loading...</div>;
+  
   const handleSave = () => {
     // Save logic here if needed
     setIsEdit(false);
   };
 
-  return (
+  return userData && (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-xl mt-10">
       <div className="flex flex-col items-center space-y-4">
         <div className="w-32 h-32 bg-gray-200 rounded-full overflow-hidden flex items-center justify-center text-gray-500">
@@ -63,12 +60,12 @@ const MyProfile = () => {
               {isEdit ? (
                 <input
                   type="text"
-                  value={userData.adress}
-                  onChange={(e) => setUserData({ ...userData, adress: e.target.value })}
+                  value={userData.address}
+                  onChange={(e) => setUserData({ ...userData, address: e.target.value })}
                   className="border border-gray-300 px-3 py-1 rounded w-full"
                 />
               ) : (
-                <p className="text-gray-800">{userData.adress}</p>
+                <p className="text-gray-800">{userData.address}</p>
               )}
             </div>
           </div>

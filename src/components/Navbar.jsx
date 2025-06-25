@@ -1,13 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { assets } from '../assets/assets';
+import { AppContext } from '../context/AppContext';
+import { useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const [token, setToken] = useState(true);
+  const { token, setToken } = useContext(AppContext); 
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false); // NEW
+
+  const logout = () => {
+    setToken(false);
+    localStorage.removeItem('token'); // Clear token from local storage
+    navigate('/'); // Redirect to home page
+  }
+
+  useEffect(() => {
+  if (token) {
+    navigate('/'); // Redirect to home if logged in
+  }
+},[token])
+
 
   return (
     <div className="relative">
@@ -73,10 +88,7 @@ const Navbar = () => {
                     My Appointments
                   </p>
                   <p
-                    onClick={() => {
-                      setToken(false);
-                      setShowProfileDropdown(false);
-                    }}
+                    onClick={logout}
                     className="py-1 px-2 hover:bg-gray-100 cursor-pointer"
                   >
                     Logout
@@ -85,7 +97,7 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-md">Create Account</button>
+          <NavLink to="/login"><button className="px-4 py-2 bg-blue-600 text-white rounded-md  cursor-pointer">Create Account</button></NavLink>   
           )}
         </div>
       </div>
@@ -126,7 +138,7 @@ const Navbar = () => {
                 </p>
               </>
             ) : (
-              <button className="w-full py-2 bg-blue-600 text-white rounded-md">Create Account</button>
+            <NavLink to="/login"> <button className="w-full py-2 bg-blue-600 text-white rounded-md  cursor-pointer">Create Account</button></NavLink> 
             )}
           </div>
         </div>
