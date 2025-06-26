@@ -84,7 +84,7 @@ const Navbar = () => {
                   </p>
                   <p
                     onClick={() => {
-                      navigate('my-appointment');
+                      navigate('my-appointments');
                       setShowProfileDropdown(false);
                     }}
                     className="py-1 px-2 hover:bg-gray-100 cursor-pointer"

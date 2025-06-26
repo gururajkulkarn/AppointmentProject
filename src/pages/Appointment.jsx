@@ -2,12 +2,17 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import RelatedDoctors from "../components/RelatedDoctors";
+import { toast } from "react-toastify";
 
 const Appointment = () => {
   const { docId } = useParams();
-  const { doctors, currencySymbol } = useContext(AppContext);
+  const { doctors, currencySymbol,backendUrl, token, getDoctorsData } = useContext(AppContext);
   const daysofWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+  const navigate = useNavigate();
 
   const [docInfo, setDocInfo] = useState(null);
   const [docSlots, setDocSlots] = useState([])
@@ -18,55 +23,6 @@ const Appointment = () => {
     const docInfo = doctors.find((doc) => doc._id === docId);
     setDocInfo(docInfo);
   };
-
-// const getAvailableSlots = async () => {
-//   setDocSlots([])
-
-// // getting current Date()
-// let today = new Date()
-
-// for(let i = 0; i < 7; i++){
-//   // getting date with index
-//   let currentDate = new Date(today)
-//   currentDate.setDate(today.getDate() + i)
-
-
-
-// // setting end time of the date with index
-// let endTime = new Date()
-// endTime.setDate(today.getDate() +  i)
-// endTime.setHours(21,0,0,0)
-
-// // setting hours
-// if(today.getDate() === currentDate.getDate()){
-//   currentDate.setHours(currentDate.getHours() > 10 ? currentDate.getHours() + 1 : 10)
-// currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0 )
-// } else {
-//   currentDate.setHours(10)
-//   currentDate.setMinutes(0)
-// }
-
-// let timeSlots = []
-
-// while(currentDate < endTime) {
-//   let formattedTime = currentDate.toLocalTimeString([],{hour: '2-digit', minute: '2-degit'})
-
-//   // add slot to Array
-//   timeSlots.push({
-//   datetime: new Date(currentDate),
-//   time: formattedTime
-//   });
-
-//   // increment current time by 30 minutes
-//   currentDate.setMinutes(currentDate.getMinutes() + 30);
-  
-// }
-
-//   setDocSlots(prev => ([...prev, timeSlots]) )
-
-// }
-
-// }
 
 
 const getAvailableSlots = async () => {
@@ -107,6 +63,42 @@ const getAvailableSlots = async () => {
 };
 
 
+
+const bookAppointment = async () => {
+  if (!token) {
+    toast.warn("Please login to book an appointment.");
+    return navigate('/login');
+  }
+
+try{
+
+const date = docSlots[slotIndex][0].datetime
+let day = date.getDate();
+let month = date.getMonth() + 1; // Months are zero-based in JavaScript
+let year = date.getFullYear();
+const slotDate = day +"_"+ month + "_" + year;
+console.log("Selected Slot Date:", slotDate,slotTime);
+
+const {data} = await axios.post(backendUrl + '/api/user/book-appointment',{docId,slotDate,slotTime},{headers:{token}})
+if(data.success){
+  toast.success("Appointment booked successfully!");
+  getDoctorsData();
+  navigate('/my-appointments');
+}
+else{
+  toast.error("Failed to book appointment. Please try again.");
+  console.error("Booking failed:", data.message);}
+}
+
+catch (error) {
+  console.error("Error booking appointment:", error);
+  toast.error("Failed to book appointment. Please try again later.");
+}
+
+}
+
+
+
   useEffect(() => {
     fetchDocInfo();
   }, [doctors, docId]);
@@ -115,11 +107,11 @@ const getAvailableSlots = async () => {
 getAvailableSlots();
   },[docInfo])
 
-useEffect(() => {
-console.log(docSlots)
+// useEffect(() => {
+// console.log(docSlots)
 
-,[docSlots]}
-)
+// ,[docSlots]}
+// )
 
 
   return  docInfo && (
@@ -182,7 +174,7 @@ console.log(docSlots)
   ))}
 </div>
 
-<button className="bg-blue-600 text-white text-sm font-light px-14 py-3 rounded-full mt-4 text-2xl font-medium ">Book an Appointment</button>
+<button onClick={bookAppointment} className="bg-blue-600 text-white text-sm font-light px-14 py-3 rounded-full mt-4 text-2xl font-medium cursor-pointer ">Book an Appointment</button>
 
 
 <RelatedDoctors  docId={docId} speciality={docInfo.speciality}/>
@@ -195,5 +187,6 @@ console.log(docSlots)
     
   );
 };
+
 
 export default Appointment;

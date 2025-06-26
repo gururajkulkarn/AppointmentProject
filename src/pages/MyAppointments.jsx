@@ -31,7 +31,7 @@ const MyAppointments = () => {
               <p className="text-blue-600 font-medium">{item.speciality}</p>
               <div className="text-gray-600">
                 <p className="font-medium">Address:</p>
-                <p>{item.address.line1}</p>
+                <p>{item.address}</p>
               </div>
               <p className="text-sm text-gray-500">
                 <span className="font-medium text-gray-700">Date & Time:</span>{" "}
