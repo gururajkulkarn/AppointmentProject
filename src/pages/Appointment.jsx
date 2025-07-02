@@ -50,10 +50,23 @@ const getAvailableSlots = async () => {
 
     while (currentDate < endTime) {
       let formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      timeSlots.push({
+     
+      let day = currentDate.getDate();
+      let month = currentDate.getMonth() + 1; 
+      let year = currentDate.getFullYear();
+
+      const slotDate = day + "_" + month + "_" + year;
+      const slotTime = formattedTime
+     
+      const isSlotAvailable = docInfo.slots_booked[slotDate] && docInfo.slots_booked[slotDate].includes(slotTime) ? false : true;
+
+     if(isSlotAvailable) {
+      timeSlots.push({  
         datetime: new Date(currentDate),
         time: formattedTime
       });
+
+    }
 
       currentDate.setMinutes(currentDate.getMinutes() + 30);
     }
@@ -155,7 +168,7 @@ getAvailableSlots();
           key={index}
           onClick={() => setSlotIndex(index)}
           className={`min-w-[80px] text-center px-4 py-10 rounded-full cursor-pointer transition 
-            ${slotIndex === index ? 'bg-blue-600 text-white' : 'bg-white border border-gray-300 text-gray-700'}
+            ${slotIndex === index ? 'bg-blue-600 text-white' : 'bg-white border border-gray-400 text-black-700'}
           `}
         >
           <p className="font-semibold">{item[0] && daysofWeek[item[0].datetime.getDay()]}</p>
@@ -167,7 +180,7 @@ getAvailableSlots();
 
 <div className="flex items-center gap-3 w-full overflow-x-scroll mt-4 ">
   {docSlots.length  && docSlots[slotIndex].map((item, index) => (
-<p key={item.time || index} onClick={()=> setSlotTime(item.time)} className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime ? 'bg-blue-600 text-white font-medium' : 'text-gray-400 border border-gray-300 font-medium'}`}>
+<p key={item.time || index} onClick={()=> setSlotTime(item.time)} className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime ? 'bg-blue-600 text-white font-medium' : 'text-black-400 border border-gray-400 font-medium'}`}>
 {item.time.toLowerCase()  }
 </p>
 
