@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 
 const Appointment = () => {
   const { docId } = useParams();
-  const { doctors, currencySymbol,backendUrl, token, getDoctorsData } = useContext(AppContext);
+  const { doctors,backendUrl, token, getDoctorsData } = useContext(AppContext);
   const daysofWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
   const navigate = useNavigate();
@@ -152,7 +152,7 @@ getAvailableSlots();
             </p>
             <p className="text-sm text-gray-500 max-w-[700px] mt-1">{docInfo.about}</p>
           </div>
-          <p className="text-gray-500 font-medium mt-4">Appointment Fees:$<span className="text-gray-600">{currencySymbol}{docInfo.fees}</span></p>
+          <p className="text-gray-500 font-medium mt-4">Appointment Fees:₹<span className="text-gray-600">{docInfo.fees}</span></p>
          </div>
         </div>
    </div>
