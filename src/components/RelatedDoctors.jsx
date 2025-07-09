@@ -31,10 +31,21 @@ useEffect(() => {
                 <div onClick={()=> {navigate(`/appointment/${item._id}`); scrollTo(0,0)}} key={index} className='border border-blue-200 rounded-xl overflow-hidden cursor-pointer shadow-md'>
                     <img className='w-full h-40 object-cover bg-blue-50' src={item.image} alt={item.name} />
                     <div className='p-4'>
-                        <div className='flex items-center gap-2'>
+                        {/* <div className='flex items-center gap-2'>
                             <span className='w-2 h-2 bg-green-500 rounded-full'></span>
                             <p className='text-sm text-green-600'>Available</p>
-                        </div>
+                        </div> */}
+                        <div className="flex items-center gap-2">
+                <span
+                  className={`w-2 h-2 rounded-full ${
+                    item.available ? "bg-green-500" : "bg-red-500"
+                  }`}
+                ></span>
+                <p className="text-sm">
+                  {item.available ? "Available" : "Not Available"}
+                </p>
+              </div>
+
                         <div className='flex flex-col items-center mt-2 text-sm text-center text-gray-700'>
                             <p className='font-semibold'>{item.name}</p>
                             <p className='text-gray-500'>{item.speciality}</p>

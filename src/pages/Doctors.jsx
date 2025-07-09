@@ -83,9 +83,14 @@ const Doctors = () => {
                       alt={item.name}
                       className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
                     />
-                    <span className="absolute top-3 right-3 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
-                      Available
-                    </span>
+
+                    <p
+                      className={`absolute top-3 right-3 text-white text-xs font-semibold px-2 py-1 rounded-full shadow ${
+                        item.available ? "bg-green-500" : "bg-red-500"
+                      }`}
+                    >
+                      {item.available ? "Available" : "Not Available"}
+                    </p>
                   </div>
 
                   <div className="p-4 text-center">
