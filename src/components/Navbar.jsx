@@ -48,6 +48,9 @@ const Navbar = () => {
           <NavLink to="/contact">
             <li className="py-1">CONTACT</li>
           </NavLink>
+          <NavLink to="http://localhost:5174/">
+            <li className="py-1">Admin</li>
+          </NavLink>
         </ul>
 
         {/* Hamburger Icon */}
