@@ -5,7 +5,7 @@ const Contact = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-blue-600 text-white py-8 shadow-md">
+      <div style={{backgroundColor:'rgba(214,69,52,255)'}} className="bg-blue-600 text-white py-8 shadow-md">
         <h1 className="text-4xl font-bold text-center">Contact Us</h1>
       </div>
 

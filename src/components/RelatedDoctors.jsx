@@ -56,7 +56,7 @@ useEffect(() => {
         </div>
     
         {/* More Button */}
-        <button onClick={() => {navigate('/doctors')}} className='mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition'>More</button>
+        <button style={{ backgroundColor: 'rgba(214,69,52,255)' }} onClick={() => {navigate('/doctors')}} className='mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition'>More</button>
     </div>
   )
 }

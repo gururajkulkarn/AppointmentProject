@@ -1,4 +1,4 @@
-import { createContext, use } from "react";
+import { createContext } from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 // import { doctors } from "../assets/assets";
@@ -22,7 +22,6 @@ const AppContextProvider = (props) => {
       const { data } = await axios.get(backendUrl + "/api/doctor/list");
       if (data.success) {
         setDoctors(data.doctors);
-        console.log("✅ Doctors data loaded:", data.doctors);
       } else {
         toast.error("Failed to fetch doctors data. Please try again later.");
       }
@@ -39,7 +38,6 @@ const AppContextProvider = (props) => {
       });
       if (data.success) {
         setUserData(data.user);
-        console.log("✅ User data loaded:", data.user);
       } else {
         toast.error(data.message);
       }

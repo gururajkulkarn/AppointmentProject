@@ -26,16 +26,16 @@ const Navbar = () => {
 
   return (
     <div className="relative">
-      <div className="flex items-center justify-between text-sm py-4 px-4 mb-5 border-b border-b-gray-400">
+      <div className="flex items-center justify-between text-sm py-4 px-4 mb-5 border-b border-b-gray-600">
         <img
-          className="w-44 cursor-pointer"
-          src={assets.logo}
+          className="w-50 cursor-pointer"
+          src={assets.doc_meet}
           alt="Logo"
           onClick={() => navigate('/')}
         />
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex items-start gap-5 font-medium">
+        <ul className="hidden md:flex items-start gap-5 font-medium" style={{fontSize:"18px"}}>
           <NavLink to="/">
             <li className="py-1">HOME</li>
           </NavLink>
@@ -64,7 +64,7 @@ const Navbar = () => {
               onMouseLeave={() => setShowProfileDropdown(true)}
             >
               <img
-              className="w-8 rounded-full"
+              className="w-10 rounded-full"
               src={userData?.image || assets.profile_pic}
               alt="profile"
             />

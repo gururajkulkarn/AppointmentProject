@@ -37,7 +37,7 @@ const Doctors = () => {
       </h1>
       <div className="flex flex-col sm:flex-row gap-8">
         {/* Sidebar Filter */}
-        <aside className="sm:w-48 bg-white rounded-lg shadow p-6">
+        <aside  className="sm:w-48 bg-white rounded-lg shadow p-6">
           <h2 className="text-lg font-semibold mb-4 text-gray-700">
             Specialities
           </h2>

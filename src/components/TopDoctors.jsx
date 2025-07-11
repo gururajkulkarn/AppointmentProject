@@ -23,7 +23,7 @@ const TopDoctors = () => {
             className="border border-blue-200 rounded-xl overflow-hidden cursor-pointer shadow-md"
           >
             <img
-              className="w-full h-40 object-cover bg-blue-50"
+              className="w-full h-50  bg-blue-50"
               src={item.image}
               alt={item.name}
             />
@@ -40,7 +40,7 @@ const TopDoctors = () => {
                  
               </div>
 
-              <div className="flex flex-col items-center mt-2 text-sm text-center text-gray-700">
+              <div className="flex flex-col items-center mt-2 text-center text-gray-700">
                 <p className="font-semibold">{item.name}</p>
                 <p className="text-gray-500">{item.speciality}</p>
               </div>
@@ -54,7 +54,7 @@ const TopDoctors = () => {
         onClick={() => {
           navigate("/doctors");
         }}
-        className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+       style={{ backgroundColor: 'rgba(214,69,52,255)' }} className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
       >
         More
       </button>

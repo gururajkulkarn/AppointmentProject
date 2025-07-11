@@ -1,97 +1,132 @@
-import React from 'react'
-import { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { AppContext } from '../context/AppContext'
-import { useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
 const Login = () => {
+  const { backendUrl, token, setToken } = useContext(AppContext)
 
-const {backendUrl, token, setToken} = useContext(AppContext)
+  const [state, setState] = useState('Sign Up')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
 
+  const onSubmitHandler = async (e) => {
+    e.preventDefault()
 
-const [state, setState] = useState('Sign Up')
-const [email, setEmail] = useState('')
-const [password, setPassword] = useState('')
-const [name, setName] = useState('')
-
-const onSubmitHandler = async (e) => {
-  e.preventDefault();
-
-  try{
-if(state === 'Sign Up') {
-    const {data} = await axios.post(backendUrl + '/api/user/register', {
-      name,
-      email,
-      password
-    });
-    if(data.success){
-      localStorage.setItem('token', data.token);
-      setToken(data.token);
-      alert("Account created successfully");
-    }
-    else{
-    toast.error(data.message || "Failed to create account. Please try again later.");
-    }
-
-  }
-
-else if (state === 'Login') {
-    const {data} = await axios.post(backendUrl + '/api/user/login', {
-      email,
-      password
-    });
-    if(data.success){
-      localStorage.setItem('token', data.token);
-      setToken(data.token);
-      alert("Logged in successfully");
-    }
-    else{
-      toast.error(data.message || "Failed to login. Please try again later.");
+    try {
+      if (state === 'Sign Up') {
+        const { data } = await axios.post(backendUrl + '/api/user/register', {
+          name,
+          email,
+          password
+        })
+        if (data.success) {
+          localStorage.setItem('token', data.token)
+          setToken(data.token)
+          alert('Account created successfully')
+        } else {
+          toast.error(data.message || 'Failed to create account. Please try again later.')
+        }
+      } else if (state === 'Login') {
+        const { data } = await axios.post(backendUrl + '/api/user/login', {
+          email,
+          password
+        })
+        if (data.success) {
+          localStorage.setItem('token', data.token)
+          setToken(data.token)
+          alert('Logged in successfully')
+        } else {
+          toast.error(data.message || 'Failed to login. Please try again later.')
+        }
+      }
+    } catch (error) {
+      console.error('Error during login/signup:', error)
+      toast.error('An error occurred. Please try again.')
     }
   }
-
-  }
-  catch (error) {
-    console.error("Error during login/signup:", error);
-  }
-
-
-}
 
   return (
-  <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex item-center'>
-<div className='flex flex-col gap-3 m-auto items-start p-8 min-w-[400px] sm:min-w-96 border rounded-xl text-zink-600 text-sm shadow-lg'>
-<p className='text-2xl font-semibold '>{state === 'Sign Up' ? "Create Account" : "Login"}</p>
-<p>Please {state === 'Sign Up' ? "Sign Up" : "log in"}  to book appointment</p>
-{state === 'Sign Up' &&  <div className='w-full'>
-<p>Username</p>   
-<input className='border border-zink-300 rounded w-full p-2 mt-1' type="text" placeholder='Enter Username' value={name} onChange={(e) => setName(e.target.value)} />
-</div>}
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gray-50">
+      <form
+        onSubmit={onSubmitHandler}
+        className="w-full max-w-md bg-white shadow-md rounded-xl p-6 sm:p-8 text-gray-700"
+      >
+        <p className="text-2xl font-semibold mb-1">
+          {state === 'Sign Up' ? 'Create Account' : 'Login'}
+        </p>
+        <p className="mb-4 text-sm">
+          Please {state === 'Sign Up' ? 'Sign Up' : 'log in'} to book an appointment
+        </p>
 
-<div className='w-full'>
-  <p>Email</p>
-<input className='border border-zink-300 rounded w-full p-2 mt-1' type="email" placeholder='Enter Email' value={email} onChange={(e) => setEmail(e.target.value)} />
-</div>
-<div className='w-full'>
-  <p>Password</p>
-<input className='border border-zink-300 rounded w-full p-2 mt-1' type="password" placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} /> 
-</div>
+        {state === 'Sign Up' && (
+          <div className="mb-4">
+            <label className="block mb-1">Username</label>
+            <input
+              type="text"
+              placeholder="Enter Username"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+        )}
 
-<button type="submit" className='bg-blue-600 text-white w-full py-2 rounded-md text-base  cursor-pointer'>{state === 'Sign Up' ? "Create Accunt" : "Login"}</button>
+        <div className="mb-4">
+          <label className="block mb-1">Email</label>
+          <input
+            type="email"
+            placeholder="Enter Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
 
-{state === 'Sign Up' ?
-<p className='text-sm mt-2'>Already have an account? <span onClick={() => setState('Login')} className='text-blue-600 cursor-pointer'>Login</span></p>
-:
-<p className='text-sm mt-2'>Don't have an account? <span onClick={() => setState('Sign Up')} className='text-blue-600 cursor-pointer'>Sign Up</span></p>
-}
+        <div className="mb-4">
+          <label className="block mb-1">Password</label>
+          <input
+            type="password"
+            placeholder="Enter Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
 
-</div>
+        <button
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-medium transition duration-200"
+        >
+          {state === 'Sign Up' ? 'Create Account' : 'Login'}
+        </button>
 
-
-
-
-  </form>
+        <p className="text-sm mt-4 text-center">
+          {state === 'Sign Up' ? (
+            <>
+              Already have an account?{' '}
+              <span
+                onClick={() => setState('Login')}
+                className="text-blue-600 hover:underline cursor-pointer"
+              >
+                Login
+              </span>
+            </>
+          ) : (
+            <>
+              Don&apos;t have an account?{' '}
+              <span
+                onClick={() => setState('Sign Up')}
+                className="text-blue-600 hover:underline cursor-pointer"
+              >
+                Sign Up
+              </span>
+            </>
+          )}
+        </p>
+      </form>
+    </div>
   )
 }
 
