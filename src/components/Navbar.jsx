@@ -48,7 +48,7 @@ const Navbar = () => {
           <NavLink to="/contact">
             <li className="py-1">CONTACT</li>
           </NavLink>
-          <NavLink to="http://localhost:5174/">
+          <NavLink to="https://docmeetadmin.netlify.app/">
             <li className="py-1">Admin</li>
           </NavLink>
         </ul>
